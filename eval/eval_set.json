@@ -1,0 +1,144 @@
+[
+  {
+    "question": "What strategic initiatives has Meta undertaken?",
+    "reference_answer": "Meta has undertaken several strategic initiatives, including focusing on developing the metaverse, investing in virtual and augmented reality technologies, expanding their advertising platform, and exploring opportunities in artificial intelligence and machine learning.",
+    "company": "meta",
+    "used_documents": [
+      "meta_10k_2024_mda.txt"
+    ]
+  },
+  {
+    "question": "What risks does Apple list in its 2024 filings?",
+    "reference_answer": "In its 2024 10-K filing, Apple lists risks related to global economic conditions, changes in consumer preferences, competition, supply chain disruptions, cybersecurity threats, and regulatory changes as potential risks to its business operations.",
+    "company": "apple",
+    "used_documents": [
+      "apple_10k_2024_risks.txt"
+    ]
+  },
+  {
+    "question": "What is the outlook for Google\u2019s advertising business according to their Q1 2024 earnings call?",
+    "reference_answer": "During Google's Q1 2024 earnings call, the outlook for their advertising business was positive, with strong growth expected in the coming quarters. The company highlighted increasing demand for online advertising services and innovative ad formats as key drivers for future revenue growth. Additionally, Google emphasized their commitment to enhancing targeting capabilities and improving ad performance to better serve advertisers and drive higher returns on investment. Overall, the outlook for Google's advertising business in Q1 2024 appears to be optimistic.",
+    "company": "google",
+    "used_documents": [
+      "google-earningcall-2024-Q1.txt"
+    ]
+  },
+  {
+    "question": "How does Meta address privacy concerns in its risk disclosures?",
+    "reference_answer": "Meta addresses privacy concerns in its risk disclosures by acknowledging the potential impact of privacy breaches on its business operations and reputation. The company discloses that any failure to protect user data or comply with privacy regulations could result in legal and financial consequences, as well as damage to its brand and user trust. Meta also highlights its ongoing efforts to invest in privacy and security measures to mitigate these risks and maintain the trust of its users.",
+    "company": "meta",
+    "used_documents": [
+      "meta_10k_2024_risks.txt"
+    ]
+  },
+  {
+    "question": "Summarize the key points from Apple\u2019s Management Discussion and Analysis (MDA) section in the 2024 10-K.",
+    "reference_answer": "In the 2024 10-K, Apple's Management Discussion and Analysis (MDA) highlighted key points such as the company's focus on innovation and product development, continued growth in services and wearables segments, challenges related to global economic conditions and supply chain disruptions, investments in research and development, and commitment to sustainability and corporate social responsibility initiatives. Additionally, Apple emphasized its strong financial performance, including revenue growth and profitability, as well as its strategic priorities for the future.",
+    "company": "apple",
+    "used_documents": [
+      "apple_10k_2024_mda.txt"
+    ]
+  },
+  {
+    "question": "Identify and list the main themes discussed in Google\u2019s 2024 10-K risk and MDA sections.",
+    "reference_answer": "The main themes discussed in Google's 2024 10-K risk and MDA sections include technological innovation, competition in the digital advertising market, regulatory challenges related to data privacy and antitrust concerns, cybersecurity risks, and potential impacts of global economic conditions on the company's financial performance.",
+    "company": "google",
+    "used_documents": [
+      "google_10k_2024_risks.txt",
+      "google_10k_2024_mda.txt"
+    ]
+  },
+  {
+    "question": "Compare the regulatory risks discussed by Apple and Google in their 2024 10-K filings.",
+    "reference_answer": "In their 2024 10-K filings, Apple highlighted regulatory risks related to antitrust investigations, privacy regulations, and intellectual property protection. On the other hand, Google discussed regulatory risks related to data privacy regulations, competition laws, and government scrutiny of its advertising practices. Both companies emphasized the potential impact of changing regulations on their business operations and financial performance.",
+    "company": "multi",
+    "used_documents": [
+      "apple_10k_2024_risks.txt",
+      "google_10k_2024_risks.txt"
+    ]
+  },
+  {
+    "question": "Synthesize the key financial and strategic challenges faced by Meta and Apple as outlined in their 2024 10-K filings.",
+    "reference_answer": "In their 2024 10-K filings, Meta and Apple both highlighted key financial and strategic challenges. Meta identified increased competition, regulatory scrutiny, and potential user growth limitations as significant challenges. Apple, on the other hand, cited supply chain disruptions, macroeconomic uncertainties, and evolving consumer preferences as key challenges. Both companies also emphasized the importance of innovation and adapting to changing market dynamics to address these challenges effectively.",
+    "company": "multi",
+    "used_documents": [
+      "meta_10k_2024_risks.txt",
+      "meta_10k_2024_mda.txt",
+      "apple_10k_2024_risks.txt",
+      "apple_10k_2024_mda.txt"
+    ]
+  },
+  {
+    "question": "Analyze how Google\u2019s advertising outlook and risk factors might influence its strategic priorities in 2024.",
+    "reference_answer": "Google's advertising outlook and risk factors will likely play a significant role in shaping its strategic priorities in 2024. The company's advertising revenue is heavily dependent on factors such as changes in consumer behavior, competition from other digital platforms, and regulatory challenges. To mitigate these risks and capitalize on growth opportunities, Google may prioritize investments in innovative advertising technologies, diversification of revenue streams, and strengthening its relationships with advertisers and partners. Additionally, the company may focus on enhancing data privacy and security measures to address regulatory concerns and maintain consumer trust. Overall, Google's strategic priorities in 2024 are likely to be influenced by its assessment of advertising trends, risks, and opportunities in the market.",
+    "company": "google",
+    "used_documents": [
+      "google-earningcall-2024-Q1.txt",
+      "google_10k_2024_risks.txt"
+    ]
+  },
+  {
+    "question": "What are the overlapping themes in the 2024 risk disclosures of Meta and Google?",
+    "reference_answer": "The overlapping themes in the 2024 risk disclosures of Meta and Google include regulatory risks related to data privacy and security, competition in the technology industry, potential impact of geopolitical events on operations, and risks associated with changes in consumer behavior and preferences. Both companies highlight the importance of addressing these risks to maintain their competitive position and sustain growth.",
+    "company": "multi",
+    "used_documents": [
+      "meta_10k_2024_risks.txt",
+      "google_10k_2024_risks.txt"
+    ]
+  },
+  {
+    "question": "How did Apple's and Meta's strategic investments differ according to their 2024 10-K MD&A sections?",
+    "reference_answer": "Apple's strategic investments in 2024 focused on expanding their product offerings and enhancing their ecosystem through acquisitions of technology companies and investments in research and development. On the other hand, Meta's strategic investments in 2024 were primarily aimed at diversifying their revenue streams and expanding into new markets through acquisitions of companies in the virtual reality and augmented reality space.",
+    "company": "multi",
+    "used_documents": [
+      "apple_10k_2024_mda.txt",
+      "meta_10k_2024_mda.txt"
+    ]
+  },
+  {
+    "question": "What financial or strategic insights can be drawn from the Q4 2024 earnings calls of Apple and Google?",
+    "reference_answer": "Based on the Q4 2024 earnings calls of Apple and Google, it can be inferred that both companies experienced strong financial performance during the quarter. Apple reported record-breaking iPhone sales and growth in its services segment, indicating continued consumer demand for its products and services. Google highlighted growth in its advertising revenue and cloud computing business, demonstrating its ability to capitalize on digital advertising trends and the increasing demand for cloud services. Overall, these insights suggest that both Apple and Google are well-positioned for future growth and profitability in their respective markets.",
+    "company": "multi",
+    "used_documents": [
+      "apple-earningcall-2024-Q4.txt",
+      "google-earningcall-2024-Q1.txt"
+    ]
+  },
+  {
+    "question": "What strategic priorities does Microsoft outline in its 2024 10-K MD&A section?",
+    "reference_answer": "In its 2024 10-K MD&A section, Microsoft outlines strategic priorities focused on driving growth and innovation through cloud computing, artificial intelligence, and digital transformation initiatives. The company emphasizes its commitment to expanding its cloud services, investing in AI capabilities, and helping customers accelerate their digital transformation efforts. Additionally, Microsoft highlights its focus on sustainability and responsible business practices as key strategic priorities for the future.",
+    "company": "microsoft",
+    "used_documents": [
+      "microsoft_10k_2024_mda.txt"
+    ]
+  },
+  {
+    "question": "What are the major risks mentioned in Amazon\u2019s 2024 10-K filing?",
+    "reference_answer": "Some major risks mentioned in Amazon's 2024 10-K filing include risks related to competition, changes in consumer preferences, regulatory challenges, potential disruptions in supply chain and distribution networks, cybersecurity threats, and risks associated with international operations and currency exchange rates.",
+    "company": "amazon",
+    "used_documents": [
+      "amazon_10k_2024_risks.txt"
+    ]
+  },
+  {
+    "question": "What are some long-term challenges highlighted across multiple tech companies' filings?",
+    "reference_answer": "Some long-term challenges highlighted across multiple tech companies' filings include increasing competition, rapid technological advancements, cybersecurity threats, regulatory changes, and potential economic downturns impacting consumer spending.",
+    "company": "multi",
+    "used_documents": [
+      "apple_10k_2024_risks.txt",
+      "google_10k_2024_risks.txt",
+      "meta_10k_2024_risks.txt",
+      "amazon_10k_2024_risks.txt"
+    ]
+  },
+  {
+    "question": "How do leading tech firms signal their competitive strategies through public filings?",
+    "reference_answer": "Leading tech firms signal their competitive strategies through public filings by providing detailed information on their business operations, financial performance, and future plans. This includes disclosing key metrics such as revenue growth, profit margins, market share, and research and development investments. Additionally, firms may discuss their competitive positioning, market trends, and potential risks in their filings to give investors insight into their strategic priorities and how they plan to maintain a competitive edge in the industry.",
+    "company": "multi",
+    "used_documents": [
+      "microsoft_10k_2024_mda.txt",
+      "amazon_10k_2024_mda.txt",
+      "meta_10k_2024_mda.txt"
+    ]
+  }
+]

@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.Python
+*.pyo
+*.pyd
+*.pkl
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+
+# Environment Variables
+.env
+
+# VSCode
+.vscode/
+
+# Chroma DB artifacts
+chroma_store/
+
+# Eval outputs
+eval/summary/
+eval/results/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+regen_refs.py

@@ -1,0 +1,15 @@
+Apple put on notice over support for third-party watches and headphones
+The European Commission will work with Apple over the next six months to determine exactly what must be done to improve iOS interoperability.
+The European Commission has opened new proceedings under the Digital Markets Act (DMA) that will see the bloc instruct Apple on how it can comply with its interoperability obligations. The two “specification proceedings” focused on iOS and iPadOS will conclude within six months.
+
+Under DMA, Apple is required to provide third parties “free and effective interoperability” with hardware and software features controlled by iOS and iPadOS. Now the EU is going to help Apple understand what that specifically means.
+
+“Today is the first time we use specification proceedings under the DMA to guide Apple towards effective compliance with its interoperability obligations through constructive dialogue,” said outgoing EU competition chief Margrethe Vestager. “We are focused on ensuring fair and open digital markets. Effective interoperability, for example with smartphones and their operating systems, plays an important role in this.”
+The first specification proceeding will examine how Apple’s iOS operating system handles interoperability with devices like headphones, smartwatches, and virtual reality headsets, particularly regarding functions like notifications, device pairing, and connectivity. While the EU doesn’t specify, we can imagine it might want to address AirPods’ lack of support for true Bluetooth multipoint capabilities and a long-standing complaint from Garmin watch owners who can’t send quick replies when paired with an iPhone. AirPods would seem out of scope, but we’ll see where the Commission draws the line.
+
+The second proceeding will focus on how Apple is handling interoperability requests from third-party developers who want to bring their products to iOS and iPadOS devices. In a statement to Bloomberg, Apple said it’s introduced secure ways for developers to request additional iPhone and iPad interoperability, and that undermining the system protections it’s created would put European consumers at risk.
+
+The Commission says it will “communicate its preliminary findings to Apple, where it will explain the measures the gatekeeper should take to effectively comply with the interoperability obligation of the DMA.” A summary of this will also be published for third parties to comment. If the iPhone maker then fails to comply, it eventually faces fines of up to 10 percent of its global annual turnover, but that’s only after a lengthy non-compliance investigation.
+
+In September last year, Apple was designated as a “gatekeeper” — large tech platforms providing essential services that could impact market competition — alongside Microsoft, Meta, Amazon, and Alphabet.
+
