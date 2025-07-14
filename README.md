@@ -23,7 +23,7 @@ This project implements a RAG (Retrieval-Augmented Generation) chunking pipeline
   - Optional: `pattern` (abstract topic/theme)
 
 ### 4. Vector Store Upsertion
-- Processed chunks are upserted into a local [LightRAG](https://github.com/langchain-ai/light-rag) instance for downstream retrieval.
+- Processed chunks are upserted into a local LightRAG instance for downstream retrieval.
 
 ---
 
