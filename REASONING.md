@@ -2,24 +2,14 @@
 
 ## 🔍 Assignment Overview
 
-The task was to build a chunking pipeline for a Retrieval-Augmented Generation (RAG) system focused on identifying and representing abstract multi-document patterns from text data.
+The task was to build a chunking pipeline for a Retrieval-Augmented Generation (RAG) system using LightRAG, focused on identifying and representing abstract multi-document patterns from text data.
 
 ---
 
-## 🧠 Key Assumptions
-
-- Real-world documents like 10-K filings and earnings calls are structurally different; chunking should be adapted accordingly.
-- Abstract business patterns (e.g., "AI investments", "supply chain risk") exist across documents and capturing them improves downstream retrieval.
-- LLMs can help label such patterns but are expensive — so usage must be scoped.
-- Ground-truth reference answers are needed for meaningful evaluation, not just keyword overlap.
-- The dataset (10-K filings including MDA and Risk sections, along with earnings call transcripts) was self-curated to reflect realistic financial disclosures where abstract multi-document patterns could naturally emerge. This choice was made to align with the assignment's goal while introducing structural and semantic variety across documents.
-
-
----
 
 ## 🧩 Critical Design Reasoning
 
-### 0. **Dataset Selection**
+### 1. **Dataset Selection**
 
 **Decision:** Use a mix of 10-K filings (MDA and Risk sections) and earnings call transcripts from various tech companies.
 
@@ -30,90 +20,108 @@ The task was to build a chunking pipeline for a Retrieval-Augmented Generation (
 - These sources are widely used in real-world market and risk analysis, making them ideal for testing a pattern-aware RAG pipeline.
 - Their inherent structural diversity (narrative text, bullets, dialogue, and semi-tabular content) provided a robust basis to stress-test chunking and retrieval strategies.
 
-### 1. **File Ingestion & Metadata**
-
-**Decision:** Filenames are used to extract metadata (company name, document type).
-
-**Why:** The documents didn’t have standardized headers; parsing file names was the most reliable source of document-level metadata.
-
----
 
 ### 2. **Chunking Strategy by Document Type**
 
-#### a. **Risk Section Chunking**
+> **Note on LLM-based chunking:** An initial experiment asked GPT-4 to mark chunk boundaries directly on entire filings. In practice, 30-k-token inputs exceeded context limits, replies were often truncated, and the per-document cost was prohibitive. We therefore adopted rule-based splitters tailored to each document type.
 
-**Why bullet-based?** Risks tend to be disclosed as bullet points or numbered lists. A naive sentence splitter fragments them unnaturally.
+#### a. **Risk Sections**
 
-**Fallback:** If structure isn't clear, we fall back to recursive splitting to maintain readability.
+- **Primary rule:** split on bullet or numbered headings, preserving each risk factor as a self-contained chunk.  
+- **Fallback:** if bullet structure is missing, apply a recursive character splitter capped at ~800 chunk size to maintain readability.
 
-#### b. **Earnings Call Chunking**
+#### b. **Earnings-Call Transcripts**
 
-**Why speaker turns?** These documents are dialogues. Chunking by speaker helps isolate who said what — crucial for business insight and attribution.
+- **Boundary:** speaker turns (Name, Operator).  
+- **Post-processing:** merge consecutive turns from the same speaker and absorb ultra-short interjections so each chunk carries substantive content.
 
-**Challenges:** Speaker formatting was inconsistent (colons, dashes, etc.), so regex had to handle a range of patterns robustly.
+#### c. **Management Discussion & Analysis (MD&A)**
 
-#### c. **MDA (Management Discussion & Analysis)**
-
-**Why not fixed rules?** MDA text is semi-structured — paragraphs, embedded tables, etc. Using rules like "split every 4 sentences" loses nuance.
-
-**LLM use:** GPT-3.5 was used to tag abstract patterns, but only in MDA to limit cost. Other sources didn’t benefit meaningfully.
-
-#### d. **Theme Detection with HDBSCAN**
-
-**Why not KMeans?** KMeans requires specifying the number of clusters in advance and assumes all clusters are similarly sized and shaped. This is unrealistic for abstract themes, which vary in length, density, and complexity.
-
-**Why HDBSCAN?** HDBSCAN discovers natural groupings in the data without needing to predefine how many themes exist. It also marks "noise" or low-content chunks as unclustered, which improves theme coherence and avoids polluting semantic groupings with boilerplate text. This was especially valuable in documents like the MD&A and risk sections where not all paragraphs contain meaningful content.
+- **Tables:** detect tables based on numeric data, tabs and pipes 
+- **Fallback:** apply a recursive character splitter capped at ~1000 chunk size to maintain readability.
 
 ---
 
-### 3. **Pattern Representation**
 
-**Why add patterns to metadata?** Including LLM-tagged abstract patterns (e.g., "regulatory scrutiny", "capital allocation") helps group and retrieve semantically rich content.
+### 3. **Embedding Model Selection**
 
-**Tradeoff:** Risks and earnings call documents were intentionally left untagged with abstract patterns. Risk disclosures already exhibit thematic separation through structured bullet formatting. Earnings calls, being conversational, are chunked by speaker turns — preserving natural discourse units. Abstract tagging in these contexts would add minimal value while increasing annotation cost and potential noise.
+**Choice:** `BAAI/bge-small-en` via HuggingFace. for pre-chunked data, openai_embed for raw data inserts in LightRag
 
-
----
-
-### 4. **Embedding Model Selection**
-
-**Choice:** `BAAI/bge-small-en` via HuggingFace.
-
-**Why:** It balances performance with speed, and has been shown to work well for passage-level embedding tasks in industry RAG use cases.
+**Why:** Pre-chunked data already takes more time because number of chunks much larger, using openai_embed would make injestion further slower and expensive.
 
 ---
 
-### 5. Query Pipeline
+### 4. **Vector Storage**
+**Choice** Fiass vector storage
 
-**Query Rewriting:** The pipeline includes a query rewriting module that uses an LLM to reformulate the original user query into a more structured, keyword-rich prompt. This boosts retrieval effectiveness, particularly in financial documents where user queries may be vague or underspecified.
+**Why** Direct compatibility with LightRag, lighter and faster. Since metadata is not required heavier storages like ChromaDB would be overkill
 
-**Metadata Filtering:** Additionally, queries can be filtered using metadata fields such as `company_name` and `doc_type`. This ensures that irrelevant chunks (e.g., earnings call content for a risk-related query) are excluded from consideration.
+## Query Pipeline
 
-**Why this matters:** Abstract multi-document patterns often require retrieving semantically aligned passages from heterogeneous document types. Without rewriting or metadata filters, the retriever might rank unaligned chunks highly, especially when some documents contain richer embeddings or longer texts. The query pipeline addresses this gap through both pre-retrieval refinement and post-retrieval narrowing.
-
----
-
-### 6. **Evaluation Harness**
-
-**Key insight:** A good RAG system should retrieve the **right chunks** and synthesize the **right answer** — both must be evaluated.
-
-- Reference answers are generated by prompting GPT-3.5 to answer **only from retrieved chunks.** This approach simulates the ideal generation condition in a RAG system — where retrieval is perfect — allowing us to isolate and test the model's ability to synthesize information. It also ensures the reference answers are grounded, as they do not include external knowledge or hallucinations, and match the retrieval constraints imposed on the actual system.
-- Grading checks both the generated answer and whether the expected documents were retrieved, with a focus on correctness and coverage of source content.
-
-**Binary vs Graded:** Initially used binary scores, but expanded to include correctness, coverage, and abstraction using GPT feedback.
+Query pipeline is simple and straightforward. The prompt is slightly modified to exclude unnessary information from the model response that would make evaluations more convinient.
 
 ---
 
-## 🧪 Evaluation Strategy Reasoning
+### 6. **Iterative Experiments with LightRAG**
 
-Each query in the eval set was manually crafted to reflect realistic user intents, then paired with GPT-generated reference answers synthesized from relevant chunks. While `expected_documents` are included in the dataset for future use, current evaluation logic does not yet validate retrieved document IDs.
+During development I ran **two complete ingestion cycles** with LightRAG:
 
-We adopted a four-part grading rubric to move beyond binary success/failure, aiming to evaluate:
+| Iteration | Ingestion approach | What I learned |
+|-----------|-------------------|----------------|
+| **Pre‑chunked** | Each document was split first using the custom, type‑aware splitters described above, then the resulting 100–350‑token chunks were passed to `LightRAG.ainsert()`. | • Ingestion was much slower because the number of documents were 100x more.
+| **Raw (no upfront chunking)** | Entire documents were sent straight to LightRAG and segmented by its internal token splitter. OpenAI embedding was used for this iteration as speed was not a concern.
 
-- **Correctness**: Is the core information accurate and aligned with the query?
-- **Relevance**: Does the answer stick to what the question asked without digressing?
-- **Coverage**: Are key points from the source documents adequately addressed?
-- **Abstraction**: Does the answer demonstrate summarization and synthesis rather than shallow copying?
+**Outcome:** pre‑chunked model provides much better results in grader evals, both models provide similar results on GPT prompt based evals.
 
-These criteria ensure the RAG pipeline is assessed on both factual accuracy and its ability to reason over retrieved content — essential for abstract multi-document tasks.
+### 7. **Evaluation Harness**
 
+**How the bespoke test-set was built**
+
+| Stage | What we did | Why it matters |
+|-------|-------------|----------------|
+| **1. Whole-file seeding with ChatGPT-4o** | Each complete source document (10-K risk section, MDA, or earnings-call transcript) was handed to ChatGPT-4o and asked to propose a handful of information-seeking Q-A pairs that could be answered solely from that file. Every GPT-generated Q-A pair was reviewed and, when needed, re-worded or corrected | Working at document scope keeps the questions faithful to real user scenarios (they often reference numbers or phrases scattered across many paragraphs). |
+| **2. Hand-curated statistical add-ons** | We added ~2-3 numeric questions by hand (e.g., YoY margin deltas, subscriber counts) to make sure tables and figures are exercised. | Generative models tend to produce mostly qualitative questions; the manual layer stresses table retrieval and arithmetic reasoning. |
+| **3. Hand-curated false positives** | Created questions that asked information about companies whose data was not present | Evaluates the model doesn't feel obligated to respond to any question |
+| **4. Data Distrubution** | Question bank was scaterred across documents to expand coverage, some questions were intentionally curated in a way that the answers require information from multiple documents | Ensures coverage, abstract questions are important that evaluate the model for abstract multi document patterns which was a key requirement.
+
+**Why Ragas-generated test-sets were sidelined**
+
+* Initially explored Ragas for test set generation however it was discarded.
+* The test generator produced overly broad encyclopedia-style questions that asked generic questions often without including company name in context.
+* Our blended ChatGPT + manual approach yielded company-specific, retrieval-friendly questions that better reflect analyst workflows.
+
+**Scoring rubric (macro-averaged)**
+
+| Dimension     | Rule for full credit |
+|---------------|----------------------|
+| **Correctness** | Does the answer reasonably address the main point?  |
+| **Relevance**    | Are details drawn mainly from the provided context and on topic? |
+| **Abstractness**   | Does the answer synthesize across sources without long quotes? |
+
+The final set contains 20 Q-A pairs (15 ChatGPT-seeded + 3 statistical and 2 case to check for false positives), providing a balanced, human-vetted benchmark for the LightRAG pipeline.
+
+---
+
+### 🔧 Automated Grading Engines
+
+During pilot testing we tried **two separate LLM-based graders**:
+
+| Grader | Setup | Observed behaviour |
+|--------|-------|--------------------|
+| **GPT-4 “Grader” system prompt** | Default with custom criteria | Extremely strict: a single rounding variance on a numeric answer or a missing adjective in the rationale would mark the whole response as **Fail** for *Correctness* **and** *Relevance*. | 
+| **GPT-4o-mini with custom prompt** | Prompt explicitly weights criteria (*Correctness 50 %  ➜ Relevance 30 % ➜ Abstractness 20 %*) and allows non-binary grading | Much closer to human judgment: penalises big factual mistakes yet tolerates minor phrasing differences. |
+
+
+### 📊 Evaluation Results & Interpretation
+
+| Query mode&nbsp;↘︎ / Ingestion&nbsp;→ | **Pre-chunked** | **Raw** |
+|--------------------------------------|-----------------|---------|
+| **Naïve dense search** | Grader 70 % (14/20)<br>GPT 75 % (15/20) | Grader 50 % (10/20)<br>GPT 80 % (16/20) |
+| **Hybrid (dense + BM25)** | Grader 50 % (10/20)<br>GPT 90 % (18/20) | Grader 35 % (7/20)<br>GPT 80 % (16/20) |
+
+<small>*Grader = strict GPT-4 rubric, GPT = custom-weighted GPT-4o-mini grader, total questions = 20.*</small>
+
+
+#### Breakdown by question type
+
+Model was largely accurate for statistcial and false positive questions across all configurations.

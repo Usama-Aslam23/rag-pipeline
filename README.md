@@ -13,17 +13,12 @@ This project implements a RAG (Retrieval-Augmented Generation) chunking pipeline
 ### 2. Pattern Identification & Chunking
 - **Risks**: Chunked by bullet hierarchy and filtered for dense thematic content.
 - **Calls**: Speaker turns are extracted and chunked while preserving conversational coherence.
-- **MDA**: Abstract themes are inferred using clustering (HDBSCAN) or optionally tagged via LLM.
+- **MDA**: Table detection chunking
 
-### 3. Metadata Enrichment
-- Chunks are tagged with:
-  - `company_name`
-  - `doc_type`
-  - `section`
-  - Optional: `pattern` (abstract topic/theme)
 
 ### 4. Vector Store Upsertion
-- Processed chunks are upserted into a local LightRAG instance for downstream retrieval.
+- Processed chunks are up‑inserted into a local **LightRAG** store, which combines a Faiss vector index with an optional knowledge graph.
+
 
 ---
 
@@ -31,18 +26,14 @@ This project implements a RAG (Retrieval-Augmented Generation) chunking pipeline
 
 Evaluations are stored in `eval/eval_set.json` and test:
 - ✅ Retrieval of the correct document chunks
-- ✅ Answer generation fidelity (using GPT-3.5 as grader)
+- ✅ Answer generation fidelity
+- Grading is performed by a custom‑weighted GPT‑4o‑mini prompt; and GPT Grader tool.
 
 ---
 
-## 🧠 Reasoning & Assumptions
+## 🧠 Reasoning
 
-See [`REASONING.md`](./REASONING.md) for:
-- Why reference answers are GPT-generated from retrieved chunks
-- Justification for structural chunking approaches
-- Thematic tagging for analysis coverage
-- Query rewriting to align user intent with document language
-
+See [`REASONING.md`](./REASONING.md) 
 ---
 
 ## ⚙️ Environment Setup
@@ -66,9 +57,9 @@ See [`REASONING.md`](./REASONING.md) for:
 4. **Populate `.env`** with your OpenAI API key and model preferences:
    ```
    OPENAI_API_KEY=your-api-key
-   GPT_MODEL=gpt-3.5-turbo
+   GPT_MODEL=gpt-4o-mini
    TOP_K=8
-   CHROMA_DB_PATH=chroma_store/
+   WORKING_DIR=rag_storage_v3          # LightRAG’s on‑disk directory
    ```
 
 ---
@@ -78,7 +69,7 @@ See [`REASONING.md`](./REASONING.md) for:
 This pipeline has two main modes: document ingestion + chunking, and evaluation via query answering.
 
 ### 1. Run Chunking Pipeline (Ingest + Upsert)
-Extracts, processes, and indexes documents into Chroma vector store for downstream RAG.
+Extracts, processes, and indexes documents into the LightRAG store for downstream retrieval.
 
 ```bash
 python main.py pipeline
@@ -98,7 +89,7 @@ To test a single query interactively using the retrieval pipeline:
 python main.py query
 ```
 
-Make sure your `.env` file includes your OpenAI key and Chroma settings.
+Ensure your `.env` declares `WORKING_DIR` pointing to the LightRAG directory.
 
 ---
 
