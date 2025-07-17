@@ -18,11 +18,12 @@ ENV/
 .vscode/
 
 # Chroma DB artifacts
+chroma_db/
 chroma_store/
 
 # Eval outputs
-eval/summary/
-eval/results/
+eval/summary/summary*
+eval/results/run*
 
 # Jupyter
 .ipynb_checkpoints/
@@ -30,6 +31,13 @@ eval/results/
 # OS
 .DS_Store
 
+
+
 # Logs
 *.log
 regen_refs.py
+chunk_metadata_export.csv
+inspect_metadata.py
+main_2.py
+query_2.py
+test.py
