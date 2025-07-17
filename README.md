@@ -19,6 +19,7 @@ This project implements a RAG (Retrieval-Augmented Generation) chunking pipeline
 ### 4. Vector Store Upsertion
 - Processed chunks are up‑inserted into a local **LightRAG** store, which combines a Faiss vector index with an optional knowledge graph.
 
+
 ---
 
 ## 🧪 Evaluation Framework
