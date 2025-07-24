@@ -30,7 +30,7 @@ async def initialize_rag():
     
     rag = LightRAG(
         working_dir=WORKING_DIR,
-        embedding_func=openai_embed,
+        embedding_func=embedding_func,
         
         llm_model_func=gpt_4o_mini_complete,
         vector_storage="FaissVectorDBStorage",
